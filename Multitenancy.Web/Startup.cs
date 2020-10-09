@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -5,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Multitenancy.Core.Extensions;
 using Multitenancy.EntityFramework.Core.Extensions;
+using Multitenancy.Web.Controllers;
 
 namespace Multitenancy.Web
 {
@@ -13,8 +15,8 @@ namespace Multitenancy.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddMultitenancy()
-                .UseEntityFrameworkCore(
+            services.AddMultitenancy<MyTenant, Guid>()
+                .UseEntityFrameworkCore<MyTenant, Guid>(
                     builder => builder.UseSqlServer(""));
             // services.AddMultitenancy<MyTenant, Guid>(builder =>
             //     builder.UseInMemoryDatabase("Multitenancy"));

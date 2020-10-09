@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CSharpFunctionalExtensions;
 using Multitenancy.Common.Interfaces;
 using Multitenancy.Model.Entities;
 
@@ -22,6 +23,12 @@ namespace Multitenancy.Core.Repository
         public TTenant GetTenant(TKey id)
         {
             return _tenantRepository.SingleOrDefault(t => t.Id.Equals(id));
+        }
+
+        public Result RegisterTenant(TTenant tenant)
+        {
+            _tenantRepository.Add(tenant);
+            return Result.Success(tenant);
         }
     }
 }

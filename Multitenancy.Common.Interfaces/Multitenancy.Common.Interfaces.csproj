@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CSharpFunctionalExtensions" Version="2.11.9" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Multitenancy.Model\Multitenancy.Model.csproj" />
   </ItemGroup>
 

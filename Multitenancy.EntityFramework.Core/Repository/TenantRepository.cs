@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using CSharpFunctionalExtensions;
 using Multitenancy.Common.EntityBase;
 using Multitenancy.Common.Interfaces;
 using Multitenancy.EntityFramework.Core.DataAccess;
@@ -31,7 +32,14 @@ namespace Multitenancy.EntityFramework.Core.Repository
             return Filter(_context.Tenants, p=> p.Id, id).SingleOrDefault();
         }
 
-     private static IQueryable<TEntity> Filter<TEntity, TProperty>(IQueryable<TEntity> dbSet,
+        public Result RegisterTenant(TTenant tenant)
+        {
+            _context.Tenants.Add(tenant);
+            _context.SaveChanges();
+            return Result.Success(tenant);
+        }
+
+        private static IQueryable<TEntity> Filter<TEntity, TProperty>(IQueryable<TEntity> dbSet,
             Expression<Func<TEntity, TProperty>> property,
             TProperty value)
         {

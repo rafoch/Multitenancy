@@ -21,10 +21,12 @@ namespace Multitenancy.Core.Extensions
             return new MultitenancyBuilder(typeof(Tenant), typeof(int), service);
         }
 
-        public static void AddMultitenancy<TTenant, TKey>(this IServiceCollection service, Action<DbContextOptionsBuilder> options)
+        public static MultitenancyBuilder AddMultitenancy<TTenant, TKey>(this IServiceCollection service)
             where TTenant : Tenant<TKey> where TKey : IEquatable<TKey>
         {
             service.TryAddScoped<ITenantService<TTenant, TKey>, TenantService<TTenant, TKey>>();
+            service.TryAddScoped<ITenantRepository<TTenant, TKey>, TenantInMemoryRepository<TTenant, TKey>>();
+            return new MultitenancyBuilder(typeof(TTenant), typeof(TKey), service);
         }
     }
 }

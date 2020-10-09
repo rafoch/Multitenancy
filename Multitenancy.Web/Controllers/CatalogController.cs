@@ -16,12 +16,13 @@ namespace Multitenancy.Web.Controllers
         [HttpGet]
         public IActionResult GetTwo()
         {
-            _myTenantService.RegisterTenant(new MyTenant
+            var myTenant = new MyTenant
             {
                 Name = "Name"
-            });
+            };
+            _myTenantService.RegisterTenant(myTenant);
     
-            return new OkObjectResult(_myTenantService.GetTenant(Guid.NewGuid()));
+            return new OkObjectResult(_myTenantService.GetTenant(myTenant.Id));
         }
     }
 }

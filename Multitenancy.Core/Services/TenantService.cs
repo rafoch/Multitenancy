@@ -22,6 +22,7 @@ namespace Multitenancy.Core.Services
 
         public void RegisterTenant(TTenant tenant)
         {
+            _tenantRepository.RegisterTenant(tenant);
         }
 
         public TTenant GetTenant(TKey id)
