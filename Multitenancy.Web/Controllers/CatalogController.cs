@@ -21,7 +21,7 @@ namespace Multitenancy.Web.Controllers
                 Name = "Name"
             });
     
-            return new OkObjectResult(_myTenantService.GetTenant());
+            return new OkObjectResult(_myTenantService.GetTenant(Guid.NewGuid()));
         }
     }
 }

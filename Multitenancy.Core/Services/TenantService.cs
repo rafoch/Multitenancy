@@ -1,36 +1,32 @@
 ﻿using System;
-using System.Linq;
-using CSharpFunctionalExtensions;
-using Multitenancy.DataAccess.Contexts;
+using Multitenancy.Common.Interfaces;
 using Multitenancy.Model.Entities;
 
 namespace Multitenancy.Core.Services
 {
     internal class TenantService : TenantService<Tenant, int>, ITenantService<Tenant>
     {
-        public TenantService(TenantDbContext<Tenant, int> myTenantDbContext) : base(myTenantDbContext)
+        public TenantService(ITenantRepository<Tenant, int> myTenantDbContext) : base(myTenantDbContext)
         {
         }
 
     }
     internal class TenantService<TTenant, TKey> : ITenantService<TTenant, TKey> where TTenant : Tenant<TKey> where TKey : IEquatable<TKey>
     {
-        private readonly TenantDbContext<TTenant, TKey> _tenantDbContext;
+        private readonly ITenantRepository<TTenant, TKey> _tenantRepository;
 
-        public TenantService(TenantDbContext<TTenant, TKey> tenantDbContext)
+        public TenantService(ITenantRepository<TTenant, TKey> tenantRepository)
         {
-            _tenantDbContext = tenantDbContext;
+            _tenantRepository = tenantRepository;
         }
 
         public void RegisterTenant(TTenant tenant)
         {
-            _tenantDbContext.Tenants.Add(tenant);
-            _tenantDbContext.SaveChanges();
         }
 
-        public TTenant GetTenant()
+        public TTenant GetTenant(TKey id)
         {
-            var firstOrDefault = _tenantDbContext.Tenants.FirstOrDefault();
+            var firstOrDefault = _tenantRepository.GetTenant(id);
             return firstOrDefault;
         }
     }

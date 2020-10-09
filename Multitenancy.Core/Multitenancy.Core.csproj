@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Multitenancy.DataAccess\Multitenancy.DataAccess.csproj" />
+    <ProjectReference Include="..\Multitenancy.EntityFramework.Core\Multitenancy.EntityFramework.Core.csproj" />
   </ItemGroup>
 
 </Project>

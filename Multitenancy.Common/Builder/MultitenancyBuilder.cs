@@ -1,12 +1,11 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Multitenancy.Core.Extensions
+namespace Multitenancy.Common.Builder
 {
     public class MultitenancyBuilder
     {
-        public MultitenancyBuilder(
-            Type tenantType,
+        public MultitenancyBuilder(Type tenantType,
             Type keyType,
             IServiceCollection service)
         {

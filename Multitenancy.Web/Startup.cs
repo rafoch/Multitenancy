@@ -1,15 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Multitenancy.Core.Extensions;
-using Multitenancy.Web.Controllers;
+using Multitenancy.EntityFramework.Core.Extensions;
 
 namespace Multitenancy.Web
 {
@@ -18,8 +13,9 @@ namespace Multitenancy.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddMultitenancy(builder => 
-            builder.UseSqlServer("Server=localhost;Database=Multitenancy;Trusted_Connection=True;")).EnableEntityFrameworkCore();
+            services.AddMultitenancy()
+                .UseEntityFrameworkCore(
+                    builder => builder.UseSqlServer(""));
             // services.AddMultitenancy<MyTenant, Guid>(builder =>
             //     builder.UseInMemoryDatabase("Multitenancy"));
             // builder.UseSqlServer("Server=localhost;Database=Multitenancy;Trusted_Connection=True;"));
