@@ -1,4 +1,5 @@
 ﻿using System;
+using CSharpFunctionalExtensions;
 using Multitenancy.Model.Entities;
 
 namespace Multitenancy.Core.Services
@@ -10,7 +11,11 @@ namespace Multitenancy.Core.Services
 
     public interface ITenantService<TTenant, TKey> where TTenant : Tenant<TKey> where TKey : IEquatable<TKey>
     {
-        void RegisterTenant(TTenant tenant);
+        Result RegisterTenant(TTenant tenant);
+        Result UpdateTenant(TTenant tenant);
         TTenant GetTenant(TKey id);
+        Result<string> GetTenantConnectionString(TKey id);
+
+
     }
 }

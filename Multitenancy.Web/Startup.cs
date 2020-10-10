@@ -15,9 +15,9 @@ namespace Multitenancy.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddMultitenancy<MyTenant, Guid>()
-                .UseEntityFrameworkCore<MyTenant, Guid>(
-                    builder => builder.UseSqlServer(""));
+            services.AddMultitenancy();
+            // .UseEntityFrameworkCore(
+            //     builder => builder.UseSqlServer("Server=localhost;Database=MOBoard;Trusted_Connection=True;"));
             // services.AddMultitenancy<MyTenant, Guid>(builder =>
             //     builder.UseInMemoryDatabase("Multitenancy"));
             // builder.UseSqlServer("Server=localhost;Database=Multitenancy;Trusted_Connection=True;"));

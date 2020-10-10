@@ -1,4 +1,5 @@
 ﻿using System;
+using CSharpFunctionalExtensions;
 using Multitenancy.Common.Interfaces;
 using Multitenancy.Model.Entities;
 
@@ -20,15 +21,24 @@ namespace Multitenancy.Core.Services
             _tenantRepository = tenantRepository;
         }
 
-        public void RegisterTenant(TTenant tenant)
+        public Result RegisterTenant(TTenant tenant)
         {
-            _tenantRepository.RegisterTenant(tenant);
+            return _tenantRepository.RegisterTenant(tenant);
+        }
+
+        public Result UpdateTenant(TTenant tenant)
+        {
+            return _tenantRepository.UpdateTenant(tenant);
         }
 
         public TTenant GetTenant(TKey id)
         {
-            var firstOrDefault = _tenantRepository.GetTenant(id);
-            return firstOrDefault;
+            return _tenantRepository.GetTenant(id);
+        }
+
+        public Result<string> GetTenantConnectionString(TKey id)
+        {
+            return _tenantRepository.GetTenantConnectionString(id);
         }
     }
 }

@@ -17,7 +17,8 @@ namespace Multitenancy.Core.Extensions
         public static MultitenancyBuilder AddMultitenancy(this IServiceCollection service)
         {
             service.TryAddScoped<ITenantService<Tenant>, TenantService>();
-            service.TryAddScoped<ITenantRepository<Tenant, int>, TenantInMemoryRepository>();
+            service.TryAddSingleton<ITenantRepository<Tenant, int>, TenantInMemoryRepository>();
+            service.TryAddSingleton<ITenantConnectionStringBuilder<Tenant, int>, TenantConnectionStringBuilder>();
             return new MultitenancyBuilder(typeof(Tenant), typeof(int), service);
         }
 
@@ -25,6 +26,7 @@ namespace Multitenancy.Core.Extensions
             where TTenant : Tenant<TKey> where TKey : IEquatable<TKey>
         {
             service.TryAddScoped<ITenantService<TTenant, TKey>, TenantService<TTenant, TKey>>();
+            service.TryAddScoped<ITenantConnectionStringBuilder<TTenant, TKey>, TenantConnectionStringBuilder<TTenant, TKey>>();
             service.TryAddScoped<ITenantRepository<TTenant, TKey>, TenantInMemoryRepository<TTenant, TKey>>();
             return new MultitenancyBuilder(typeof(TTenant), typeof(TKey), service);
         }

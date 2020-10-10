@@ -12,5 +12,7 @@ namespace Multitenancy.Common.Interfaces
     {
         TTenant GetTenant(TKey id);
         Result RegisterTenant(TTenant tenant);
+        Result UpdateTenant(TTenant tenant);
+        Result<string> GetTenantConnectionString(TKey id);
     }
 }

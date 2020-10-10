@@ -14,14 +14,28 @@ namespace Multitenancy.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult Get()
+        public ActionResult Get([FromRoute] int id)
         {
-            var tenant = new Tenant
-            {
-                Name = "Name"
-            };
-            _tenantService.RegisterTenant(tenant);
-            return new OkObjectResult(_tenantService.GetTenant(1));
+            return new OkObjectResult(_tenantService.GetTenant(id));
+        }
+
+        [HttpPost]
+        public ActionResult Post([FromBody] Tenant tenant)
+        {
+            return new OkObjectResult(_tenantService.RegisterTenant(tenant));
+        }
+
+        [HttpPut]
+        public ActionResult Edit([FromBody] Tenant tenant)
+        {
+            return new OkObjectResult(_tenantService.UpdateTenant(tenant));
+        }
+
+        [HttpGet]
+        public ActionResult GetConnection([FromRoute] int id)
+        {
+            var tenantConnectionString = _tenantService.GetTenantConnectionString(id);
+            return new OkObjectResult(tenantConnectionString.Value);
         }
     }
 }

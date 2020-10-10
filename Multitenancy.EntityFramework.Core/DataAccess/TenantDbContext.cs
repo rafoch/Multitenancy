@@ -10,6 +10,13 @@ namespace Multitenancy.EntityFramework.Core.DataAccess
             : base(options)
         {
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.HasDefaultSchema("Multitenancy");
+            base.OnModelCreating(modelBuilder);
+        }
+
         internal DbSet<TTenant> Tenants { get; set; }
     }
 }

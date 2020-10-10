@@ -15,5 +15,21 @@ namespace Multitenancy.Model.Entities
         public string Port { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
+
+        internal void Update(
+            string description,
+            string name, 
+            string serverName, 
+            string port, 
+            string username, 
+            string password)
+        {
+            Description = description;
+            Name = name;
+            ServerName = serverName;
+            Port = port;
+            Username = username;
+            Password = password;
+        }
     }
 }

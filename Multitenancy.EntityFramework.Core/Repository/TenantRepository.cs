@@ -39,6 +39,16 @@ namespace Multitenancy.EntityFramework.Core.Repository
             return Result.Success(tenant);
         }
 
+        public Result UpdateTenant(TTenant tenant)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Result<string> GetTenantConnectionString(TKey id)
+        {
+            throw new NotImplementedException();
+        }
+
         private static IQueryable<TEntity> Filter<TEntity, TProperty>(IQueryable<TEntity> dbSet,
             Expression<Func<TEntity, TProperty>> property,
             TProperty value)
