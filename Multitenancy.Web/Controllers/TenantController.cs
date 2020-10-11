@@ -14,15 +14,21 @@ namespace Multitenancy.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult Get([FromRoute] int id)
+        public ActionResult Get([FromQuery] int id)
         {
             return new OkObjectResult(_tenantService.GetTenant(id));
+        }
+
+        [HttpGet]
+        public ActionResult GetAll()
+        {
+            return new OkObjectResult(_tenantService.GetAllTenants().Value);
         }
 
         [HttpPost]
         public ActionResult Post([FromBody] Tenant tenant)
         {
-            return new OkObjectResult(_tenantService.RegisterTenant(tenant));
+            return new OkObjectResult(_tenantService.RegisterTenant(tenant).IsSuccess);
         }
 
         [HttpPut]
@@ -32,7 +38,7 @@ namespace Multitenancy.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetConnection([FromRoute] int id)
+        public ActionResult GetConnection([FromQuery] int id)
         {
             var tenantConnectionString = _tenantService.GetTenantConnectionString(id);
             return new OkObjectResult(tenantConnectionString.Value);

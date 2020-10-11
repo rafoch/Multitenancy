@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using CSharpFunctionalExtensions;
 using Multitenancy.Common.Interfaces;
 using Multitenancy.Model.Entities;
@@ -21,6 +22,11 @@ namespace Multitenancy.Core.Services
             _tenantRepository = tenantRepository;
         }
 
+        public Result<ReadOnlyCollection<TTenant>> GetAllTenants()
+        {
+            return _tenantRepository.GetAllTenants();
+        }
+
         public Result RegisterTenant(TTenant tenant)
         {
             return _tenantRepository.RegisterTenant(tenant);
@@ -39,6 +45,11 @@ namespace Multitenancy.Core.Services
         public Result<string> GetTenantConnectionString(TKey id)
         {
             return _tenantRepository.GetTenantConnectionString(id);
+        }
+
+        public Result RemoveTenant(TKey id)
+        {
+            return _tenantRepository.RemoveTenant(id);
         }
     }
 }
