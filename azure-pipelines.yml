@@ -9,16 +9,21 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+
+
 variables:
   buildConfiguration: 'Release'
+  projectPath: 'Multitenancy/Multitenancy.Core/Multitenancy.Core.csproj'
 
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
 - task: NuGetCommand@2
+  displayName: 'Pack the package'
   inputs:
     command: 'pack'
-    packagesToPack: '$(buildConfiguration)/Multitenancy.Core/Multitenancy.Core.csproj'
+    packagesToPack: '$(projectPath)'
+    configuration: '$(configuration)'
     versioningScheme: 'byPrereleaseNumber'
     majorVersion: '0'
     minorVersion: '0'
