@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Multitenancy.Common.Builder
 {
-    public class MultitenancyBuilder
+    public class MultitenancyBuilder<TTenant, TKey>
     {
         public MultitenancyBuilder(Type tenantType,
             Type keyType,

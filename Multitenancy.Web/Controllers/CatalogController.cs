@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
+using Multitenancy.Common.Interfaces;
 using Multitenancy.Core.Services;
 
 namespace Multitenancy.Web.Controllers

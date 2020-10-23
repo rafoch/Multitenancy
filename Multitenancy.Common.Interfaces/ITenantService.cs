@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using CSharpFunctionalExtensions;
 using Multitenancy.Model.Entities;
 
-namespace Multitenancy.Core.Services
+namespace Multitenancy.Common.Interfaces
 {
-    public interface ITenantService<TTenant> : ITenantService<TTenant, int> where TTenant : Tenant
-    {
-    }
+    public interface ITenantService : ITenantService<Tenant, int> { }
 
-    public interface ITenantService<TTenant, TKey> where TTenant : Tenant<TKey> where TKey : IEquatable<TKey>
+    public interface ITenantService<TTenant, in TKey> where TTenant : class
     {
         Result<ReadOnlyCollection<TTenant>> GetAllTenants();
 

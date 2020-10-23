@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Multitenancy.Core.Services;
+using Multitenancy.Common.Interfaces;
 using Multitenancy.Model.Entities;
 
 namespace Multitenancy.Web.Controllers
 {
     public class TenantController : Controller
     {
-        private readonly ITenantService<Tenant> _tenantService;
+        private readonly ITenantService _tenantService;
 
-        public TenantController(ITenantService<Tenant> tenantService)
+        public TenantController(ITenantService tenantService)
         {
             _tenantService = tenantService;
         }

@@ -17,12 +17,13 @@ namespace Multitenancy.Common.Interfaces
         /// <param name="id">Tenant id</param>
         /// <returns>Tenant object</returns>
         TTenant GetTenant(TKey id);
+
         /// <summary>
         /// Method allows user to create tenant in store and saves it.
         /// </summary>
         /// <param name="tenant">Tenant object</param>
         /// <returns>Result of operation</returns>
-        Result RegisterTenant(TTenant tenant);
+        Result<TTenant> RegisterTenant(TTenant tenant);
         /// <summary>
         /// Update existing Tenant object.
         /// </summary>

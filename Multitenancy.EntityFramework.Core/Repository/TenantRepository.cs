@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using CSharpFunctionalExtensions;
 using Multitenancy.Common.EntityBase;
+using Multitenancy.Common.Exceptions;
 using Multitenancy.Common.Extensions;
 using Multitenancy.Common.Interfaces;
 using Multitenancy.EntityFramework.Core.DataAccess;
@@ -34,31 +35,53 @@ namespace Multitenancy.EntityFramework.Core.Repository
             return _context.Tenants.Filter(p=> p.Id, id).SingleOrDefault();
         }
 
-        public Result RegisterTenant(TTenant tenant)
+        public Result<TTenant> RegisterTenant(TTenant tenant)
         {
-            _context.Tenants.Add(tenant);
-            _context.SaveChanges();
-            return Result.Success(tenant);
+            try
+            {
+                _context.Tenants.Add(tenant);
+                _context.SaveChanges();
+                return Result.Success(tenant);
+            }
+            catch (Exception e)
+            {
+                throw new TenantCannotBeSavedException(tenant?.ToString(), e);
+            }
         }
 
         public Result UpdateTenant(TTenant tenant)
         {
-            throw new NotImplementedException();
+            var tenantToUpdate = GetTenant(tenant.Id);
+            tenantToUpdate.Update(
+                tenant.Description,
+                tenant.Name,
+                tenant.ServerName,
+                tenant.Port,
+                tenant.Username,
+                tenant.Password, 
+                tenant.DatabaseName);
+            _context.SaveChanges();
+            return Result.Success();
         }
 
         public Result<string> GetTenantConnectionString(TKey id)
         {
-            throw new NotImplementedException();
+            var tenant = GetTenant(id);
+            return tenant.ConnectionString;
         }
 
         public Result RemoveTenant(TKey id)
         {
-            throw new NotImplementedException();
+            var tenant = GetTenant(id);
+            _context.Tenants.Remove(tenant);
+            _context.SaveChanges();
+            return Result.Success();
         }
 
         public Result<ReadOnlyCollection<TTenant>> GetAllTenants()
         {
-            throw new NotImplementedException();
+            var tenants = _context.Tenants.ToList().AsReadOnly();
+            return Result.Success(tenants);
         }
     }
 }

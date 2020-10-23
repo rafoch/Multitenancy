@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Data.SqlClient;
 using Multitenancy.Common.EntityBase;
+using Multitenancy.Common.Extensions;
 
 namespace Multitenancy.Model.Entities
 {
@@ -13,6 +14,7 @@ namespace Multitenancy.Model.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public string ServerName { get; set; }
+        public string DatabaseName { get; set; }
         public string Port { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
@@ -21,7 +23,11 @@ namespace Multitenancy.Model.Entities
         {
             get
             {
-                var serverName = ServerName ?? String.Empty + "," + Port ?? String.Empty;
+                var serverName = ServerName ?? String.Empty;
+                if (!Port.IsNullOrEmpty())
+                {
+                    serverName += "," + Port;
+                }
                 var sqlConnectionStringBuilder = new SqlConnectionStringBuilder
                 {
                     Password = Password ?? String.Empty,
@@ -35,7 +41,8 @@ namespace Multitenancy.Model.Entities
         internal void Update(
             string description,
             string name, 
-            string serverName, 
+            string serverName,
+            string databaseName,
             string port, 
             string username, 
             string password)
@@ -46,6 +53,12 @@ namespace Multitenancy.Model.Entities
             Port = port;
             Username = username;
             Password = password;
+            DatabaseName = databaseName;
+        }
+
+        public override string ToString()
+        {
+            return $"{nameof(Name)}: {Name}, {nameof(Description)}: {Description}, {nameof(ServerName)}: {ServerName}, {nameof(Port)}: {Port}, {nameof(Username)}: {Username}, {nameof(Password)}: {Password}";
         }
     }
 }

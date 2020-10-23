@@ -2,41 +2,42 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 using CSharpFunctionalExtensions;
 using Multitenancy.Common.Extensions;
+using Multitenancy.Common.Exceptions;
 using Multitenancy.Common.Interfaces;
 using Multitenancy.Core.Services;
 using Multitenancy.Model.Entities;
 
 namespace Multitenancy.Core.Repository
 {
-    public class TenantInMemoryRepository : TenantInMemoryRepository<Tenant, int>
+    public class TenantInMemoryRepository : TenantInMemoryRepository<Tenant, int>, ITenantRepository
     {
-        public TenantInMemoryRepository(ITenantConnectionStringBuilder<Tenant, int> tenantConnectionStringBuilder) 
-            : base(tenantConnectionStringBuilder)
+        public TenantInMemoryRepository() 
+            : base()
         {
         }
     }
 
     public class TenantInMemoryRepository<TTenant, TKey> : ITenantRepository<TTenant, TKey> where TKey : IEquatable<TKey> where TTenant : Tenant<TKey>
     {
-        private readonly ITenantConnectionStringBuilder<TTenant, TKey> _tenantConnectionStringBuilder;
         private readonly List<TTenant> _tenantRepository;
-        public TenantInMemoryRepository(
-            ITenantConnectionStringBuilder<TTenant, TKey> tenantConnectionStringBuilder)
+        public TenantInMemoryRepository()
         {
-            _tenantConnectionStringBuilder = tenantConnectionStringBuilder;
             _tenantRepository = new List<TTenant>();
         }
 
         public TTenant GetTenant(TKey id)
         {
-            return _tenantRepository.SingleOrDefault(t => t.Id.Equals(id));
+            var tenant = _tenantRepository.SingleOrDefault(t => t.Id.Equals(id));
+            if (tenant is null)
+            {
+                throw new TenantNotFoundException(id.ToString());
+            }
+            return tenant;
         }
 
-        public Result RegisterTenant(TTenant tenant)
+        public Result<TTenant> RegisterTenant(TTenant tenant)
         {
             if (typeof(TKey) == typeof(int))
             {
@@ -50,7 +51,7 @@ namespace Multitenancy.Core.Repository
             {
                 _tenantRepository.Add(tenant);
             }
-            return Result.Success();
+            return Result.Success(tenant);
         }
 
         public Result UpdateTenant(TTenant tenant)
@@ -69,7 +70,8 @@ namespace Multitenancy.Core.Repository
                 tenant.Password,
                 tenant.Port,
                 tenant.ServerName,
-                tenant.Username);
+                tenant.Username,
+                tenant.DatabaseName);
 
             _tenantRepository.Add(tenantToUpdate);
 
@@ -79,7 +81,7 @@ namespace Multitenancy.Core.Repository
         public Result<string> GetTenantConnectionString(TKey id)
         {
             var tenant = _tenantRepository.AsQueryable().Filter(t => t.Id, id).SingleOrDefault();
-            return _tenantConnectionStringBuilder.GetTenantConnectionString(tenant);
+            return tenant?.ConnectionString;
         }
 
         public Result RemoveTenant(TKey id)

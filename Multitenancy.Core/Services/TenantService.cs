@@ -6,7 +6,7 @@ using Multitenancy.Model.Entities;
 
 namespace Multitenancy.Core.Services
 {
-    internal class TenantService : TenantService<Tenant, int>, ITenantService<Tenant>
+    internal class TenantService : TenantService<Tenant, int>, ITenantService
     {
         public TenantService(ITenantRepository<Tenant, int> myTenantDbContext) : base(myTenantDbContext)
         {

@@ -12,21 +12,22 @@ namespace Multitenancy.EntityFramework.Core.Extensions
 {
     public static class MultitenancyEntityFrameworkExtensions
     {
-        public static void UseEntityFrameworkCore(this MultitenancyBuilder builder, Action<DbContextOptionsBuilder> options)
+        public static void UseEntityFrameworkCore(
+            this MultitenancyBuilder<Tenant, int> builder, 
+            Action<DbContextOptionsBuilder> options)
         {
             builder.Service.Replace(ServiceDescriptor.Scoped<ITenantRepository<Tenant, int>, TenantEntityFrameworkCoreRepository>());
             builder.Service.AddDbContext<TenantDbContext<Tenant, int>>(options);
-            var service = builder.Service.BuildServiceProvider().GetService<TenantDbContext<Tenant, int>>();
             builder.Service.RunMigrations<Tenant, int>();
         }
 
-        public static void UseEntityFrameworkCore<TTenant, TKey>(this MultitenancyBuilder builder,
+        public static void UseEntityFrameworkCore<TTenant, TKey>(
+            this MultitenancyBuilder<TTenant, TKey> builder,
             Action<DbContextOptionsBuilder> options)
             where TTenant : Tenant<TKey> where TKey : IEquatable<TKey>
         {
             builder.Service.Replace(ServiceDescriptor.Scoped<ITenantRepository<TTenant, TKey>, TenantEntityFrameworkCoreRepository<TTenant, TKey>>());
             builder.Service.AddDbContext<TenantDbContext<TTenant, TKey>>(options);
-            var service = builder.Service.BuildServiceProvider().GetService<TenantDbContext<TTenant, TKey>>();
             builder.Service.RunMigrations<TTenant, TKey>();
         }
 
